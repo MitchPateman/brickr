@@ -5,12 +5,12 @@
 		<title>Brickr</title>
 		<style>
 			* { padding: 0; margin: 0; }
-			canvas { background: #eee; display: block; margin: 30px auto; }
+			canvas { background: rgb(200,200,200); display: block; margin: 30px auto; }
 		</style>
 </head>
 <body>
 
-<canvas id="myCanvas" width="480" height="420"></canvas>
+<canvas id="myCanvas" width="480" height="620"></canvas>
 
 <script>
 
@@ -32,7 +32,7 @@
 	var lives = 3;
 
 	//Brick Variables
-	var brickRowCount = 3;
+	var brickRowCount = 5;
 	var brickColumnCount = 5;
 	var brickWidth = 75;
 	var brickHeight = 20;
@@ -87,7 +87,7 @@
 		//(centerX, centerY, arcRadius, startAngle, endAngle, direction)
 		//direction = false for clockwise, true for counter-clockwise
 		ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-		ctx.fillStyle = "#0095DD";
+		ctx.fillStyle = "rgb(0,0,0)";
 		ctx.fill();
 		ctx.closePath();
 	} //end of drawBall function
@@ -97,7 +97,7 @@
 		ctx.beginPath();
 		//(topleftX, topleftY, bottomrightX, bottomrightY)
 		ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight)
-		ctx.fillStyle = "#0095DD"
+		ctx.fillStyle = "rgb(0,0,0)"
 		ctx.fill();
 		ctx.closePath();
 	} //end of drawPaddle function
@@ -112,7 +112,7 @@
 								bricks[c][r].y = brickY;
 								ctx.beginPath();
 								ctx.rect(brickX, brickY, brickWidth, brickHeight);
-								ctx.fillStyle = "#0095DD";
+								ctx.fillStyle = "rgb(0,0,0)"
 								ctx.fill();
 								ctx.closePath();
 						}
@@ -143,14 +143,14 @@
 
 	function drawScore(){
 		ctx.font = "16px Arial"
-		ctx.fillStyle = "#0095DD";
+		ctx.fillStyle = "rgb(0,0,0)";
 		ctx.fillText("Score: " +score, 8, 20);
 		//numbers are x,y values on canvas
 	}
 
 	function drawLives() {
 		ctx.font = "16px Arial";
-		ctx.fillStyle = "#0095DD";
+		ctx.fillStyle = "rgb(0,0,0)";
 		ctx.fillText("Lives: "+lives, canvas.width-65, 20);
 	}
 
