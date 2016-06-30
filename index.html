@@ -177,6 +177,7 @@
 		else if(y + dy > canvas.height-ballRadius) {
 				if(x > paddleX && x < paddleX + paddleWidth) {
 						dy = dy + 2; //SPEED UP BALL WITH HIT
+						//dx = dx + 2;   //For Crazy directions on bounces
 						dy = -dy;
 				}
 				else {
