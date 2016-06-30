@@ -39,6 +39,9 @@
 	var brickOffsetTop = 30;
 	var brickOffsetLeft = 30;
 
+	document.addEventListener("keydown", keyDownHandler, false);
+	document.addEventListener("keyup", keyUpHandler, false);
+
 	//make bricks array with columns and rows
 	var bricks = [];
 	for (c=0; c<brickColumnCount; c++){
@@ -47,11 +50,6 @@
 			bricks[c][r] = {x: 0, y: 0, status: 1 };
 		}
 	}
-
-
-
-	document.addEventListener("keydown", keyDownHandler, false);
-	document.addEventListener("keyup", keyUpHandler, false);
 
 	//is the key held down or not?
 	function keyDownHandler(e) {
@@ -72,18 +70,7 @@
 		}
 	}
 
-	function collisionDetection() {
-		for(c=0; c<brickColumnCount; c++) {
-				for(r=0; r<brickRowCount; r++) {
-						var brick = bricks[c][r];
-							if(brick.status == 1) {
-								if(x > brick.x && x < brick.x+brickWidth && y > brick.y && y < brick.y+brickHeight) {
-									dy = -dy;
-								}
-							}
-				}
-		}
-}
+
 
 	function drawBall() {
 		ctx.beginPath();
@@ -125,6 +112,22 @@
 
 
 
+	function collisionDetection() {
+		for(c=0; c<brickColumnCount; c++) {
+				for(r=0; r<brickRowCount; r++) {
+						var brick = bricks[c][r];
+							if(brick.status == 1) {
+								if(x > brick.x && x < brick.x+brickWidth && y > brick.y && y < brick.y+brickHeight) {
+									dy = -dy;
+									brick.status = 0;
+								}
+							}
+				}
+		}
+	}//end of function
+
+
+
 	function draw() {
 		//(topleftX, topleftY, bottomrightX, bottomrightY)
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -139,9 +142,11 @@
 		}
 		else if(y + dy > canvas.height-ballRadius){
 			if(x > paddleX && x < paddleX + paddleWidth){
-				dy = dy + 0.2;  ///////THIS MAKES THE BALL GET FASTER!!!!!
-				dy = -dy;
-				score++;
+				if(y= y-paddleHeight){
+					dy = dy + 0.2;  ///////THIS MAKES THE BALL GET FASTER!!!!!
+					dy = -dy;
+					score++;
+				}
 			}
 			else {
 				alert("GAME OVER - SCORE: " + score);
@@ -153,6 +158,7 @@
 		if(x + dx < ballRadius || x + dx > canvas.width-ballRadius){
 			dx = -dx
 		}
+
 
 		//move the paddle, and restrict to canvas size
 		if(rightPressed && paddleX < canvas.width-paddleWidth) {
