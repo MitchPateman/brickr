@@ -19,8 +19,35 @@
 	var y = canvas.height-30;
 	var dx = 2; //add small value to x and y after every frame to move ball
 	var dy = -2;
-	var ballRadius = 10; //to see if ballRadius touches wall
+	var ballRadius = 10; //to see if ballRadius touches wall instead of sinking in wall
+	var paddleHeight = 10;
+	var paddleWidth = 75;
+	var paddleX = (canvas.width-paddleWidth)/2 //starting point on x axis
+	var rightPressed = false; //left or right gets pressed?
+	var leftPressed = false;
 
+
+	document.addEventListener("keydown", keyDownHandler, false);
+	document.addEventListener("keyup", keyUpHandler, false);
+
+	//is the key held down or not?
+	function keyDownHandler(e) {
+		if(e.keyCode == 39) {  //right arrow key
+				rightPressed = true;
+		}
+		else if(e.keyCode == 37) {  //left arrow key
+				leftPressed = true;
+		}
+	}
+
+	function keyUpHandler(e) {
+		if(e.keyCode == 39) {  //right
+				rightPressed = false;
+		}
+		else if(e.keyCode == 37) {  //left
+				leftPressed = false;
+		}
+	}
 
 
 	function drawBall() {
@@ -34,23 +61,54 @@
 	} //end of drawBall function
 
 
+	function drawPaddle() {
+		ctx.beginPath();
+		//(topleftX, topleftY, bottomrightX, bottomrightY)
+		ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight)
+		ctx.fillStyle = "#0095DD"
+		ctx.fill();
+		ctx.closePath();
+	} //end of drawPaddle function
+
+
 	function draw() {
 		//(topleftX, topleftY, bottomrightX, bottomrightY)
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawBall();
-		x += dx;
-		y += dy;
+		drawPaddle();
 
 		//bounce off top and bottom wall
-		if(y + dy < ballRadius|| y + dy > canvas.height-ballRadius) {
+		if(y + dy < ballRadius) {
 		dy = -dy;
+		}
+		else if(y + dy > canvas.height-ballRadius){
+			if(x > paddleX && x < paddleX + paddleWidth){
+				dy++;
+				dy = -dy;
+			}
+			else {
+			alert("GAME OVER");
+			document.location.reload()
+			}
 		}
 
 		//bounce off left and right walls
 		if(x + dx < ballRadius || x + dx > canvas.width-ballRadius){
 			dx = -dx
 		}
+
+		//move the paddle, and restrict to canvas size
+		if(rightPressed && paddleX < canvas.width-paddleWidth) {
+			paddleX += 7;
+		}
+		else if(leftPressed && paddleX > 0) {
+			paddleX -= 7;
+		}
+		//make the ball move!
+		x += dx;
+		y += dy;
 	} //end of draw function
+
 
 	setInterval(draw, 10) //called every 10 milliseconds
 
